@@ -1,17 +1,25 @@
 const fs = require("fs");
 
-const lines = fs
-    .readFileSync("day1.txt", { encoding: "utf-8" })
-    .split("\n")
-    .filter((x) => x)
-    .map((x) => x);
+const elves = fs.readFileSync("day1.txt", { encoding: "utf-8" }) // read day??.txt content
+    .replace(/\r/g, "")
+    .trim()
+    .split("\n\n");
 
-let max = 0;
-let count = 0;
-
-lines.forEach(line => {
-    line == '\r' ? count = 0 : count += parseInt(line);
-    if (count > max) max = count;
+const elfCalories = elves.map((elf) => {
+    const calories = elf.split("\n").map(Number);
+    return calories.reduce((previous, current) => previous + current, 0)
 });
 
-console.log(max)
+const getMaxNumber = (numberArr) => {
+    return Math.max(...numberArr);
+}
+
+const getTop3MaxNumbers = (numberArr) => {
+    return numberArr
+        .sort((a, b) => b - a)
+        .slice(0, 3)
+        .reduce((previous, current) => previous + current, 0)
+}
+
+console.log('Part 1: ' + getMaxNumber(elfCalories))
+console.log('Part 2: ' + getTop3MaxNumbers(elfCalories))
