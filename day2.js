@@ -21,6 +21,27 @@ const moveInputs = {
     Z: moveValues.scissors,
 }
 
+const solutions = {
+    A: {
+        // Rock
+        X: moveValues.scissors, // Loss
+        Y: moveValues.rock, // Draw
+        Z: moveValues.paper, // Win
+    },
+    B: {
+        // Paper
+        X: moveValues.rock,
+        Y: moveValues.paper,
+        Z: moveValues.scissors,
+    },
+    C: {
+        // Scissors
+        X: moveValues.paper,
+        Y: moveValues.scissors,
+        Z: moveValues.rock,
+    },
+};
+
 const calculateRoundScore = (myMove, opponentMove) => {
     if (opponentMove === myMove) {
 
@@ -45,8 +66,15 @@ const outcomes = playedRounds.map((round) => {
     return calculateRoundScore(myMove, opponentMove);
 });
 
+const fixedOutcomes = playedRounds.map((round) => {
+    const opponentMove = moveInputs[round[0]];
+    const myMove = solutions[round[0]][round[1]];
+    return calculateRoundScore(myMove, opponentMove);
+})
+
 const calculateTotalScore = (roundScores) => {
     return roundScores.reduce((a, b) => a + b, 0)
 }
 
 console.log('Part 1: ' + calculateTotalScore(outcomes))
+console.log('Part 2: ' + calculateTotalScore(fixedOutcomes))
